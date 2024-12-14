@@ -9,7 +9,7 @@ from torchvision import transforms
 from myNetLight import myNetLight 
 from get_skeleton import data_keypoints
 from get_keypoints import get_keypoints
-#import 의현오빠 python 파일
+from get_correction import correction
 
 # 디바이스 설정 (GPU가 있으면 GPU 사용)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -77,8 +77,7 @@ def main():
     print(f"Predicted class: {predicted_class}")
 
     # 자세 교정
-    keypoints = get_keypoints(opt.source) 
-    #의현오빠 함수 ex. pose_correction (keypoints , predicted_class)
+    correction(opt.source, predicted_class)
 
 
 if __name__ == "__main__":
