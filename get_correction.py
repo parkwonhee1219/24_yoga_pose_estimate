@@ -12,7 +12,9 @@ from utils.general import non_max_suppression_kpt, strip_optimizer, xyxy2xywh
 from utils.plots import output_to_keypoint, plot_one_box_kpt, colors
 from pose_correction import pose_correction
 
-def correction(image_path, predicted_class=-1, poseweights="yolov7-w6-pose.pt", device='cpu', hide_labels=False, hide_conf=True, line_thickness=3, output_img="./output"):
+def correction(image_path, predicted_class=-1, poseweights="yolov7-w6-pose.pt", device='cuda', hide_labels=False, hide_conf=True, line_thickness=3, output_img="./output"):
+
+    #device = torch.device('cuda')
     device = select_device(device)  # 장치 선택
     model = attempt_load(poseweights, map_location=device)  # 모델 로드
     model.eval()
@@ -81,7 +83,8 @@ def correction(image_path, predicted_class=-1, poseweights="yolov7-w6-pose.pt", 
     correction_text = pose_correction(keypoints_data, predicted_class)
 
     # correction 텍스트 추가
-    cv2.putText(im0, correction_text, (30, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+    cv2.putText(im0, correction_text, (30, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.567, (0, 0, 255), 2)
+
 
     # 결과 이미지 저장
     base_name = os.path.splitext(os.path.basename(image_path))[0]  # 입력 이미지 이름에서 확장자 제거
@@ -93,4 +96,3 @@ def correction(image_path, predicted_class=-1, poseweights="yolov7-w6-pose.pt", 
     output_image_name = os.path.join(output_img, f"{base_name}.jpg")  # 저장 경로 및 이름 설정
     cv2.imwrite(output_image_name, im0)  # 결과 이미지 저장
     print(f"Output image saved as {output_image_name}")
-
