@@ -10,6 +10,7 @@ from myNetLight import myNetLight
 from get_skeleton import data_keypoints
 from get_keypoints import get_keypoints
 from get_correction import correction
+import time 
 
 # 디바이스 설정 (GPU가 있으면 GPU 사용)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -45,9 +46,14 @@ def preprocess_image(image_path):
 
 # 추론 함수
 def infer(model, image, skeleton):
+
+    start_time = time.time()
     with torch.no_grad():  # 기울기 계산 안 함
         outputs = model(image, skeleton)  # 모델의 출력 값
         _, predicted = torch.max(outputs, 1)  # 가장 높은 값을 가진 클래스 예측
+    end_time = time.time()
+    start_to_end = end_time - start_time
+    print(f'time : {start_to_end}')
     return predicted.item()
 
 # Command line argument 파싱
