@@ -96,3 +96,4 @@ def correction(image_path, predicted_class=-1, poseweights="yolov7-w6-pose.pt", 
     output_image_name = os.path.join(output_img, f"{base_name}.jpg")  # 저장 경로 및 이름 설정
     cv2.imwrite(output_image_name, im0)  # 결과 이미지 저장
     print(f"Output image saved as {output_image_name}")
+
